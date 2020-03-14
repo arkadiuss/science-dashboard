@@ -1,5 +1,9 @@
 package models
 
+import(
+	"time"
+)
+
 type Dashboard struct {
-	Sunrise, Sunset int
+	Sunrise, Sunset time.Time
 }
