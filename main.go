@@ -1,29 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"github.com/arkadiuss/science-dashboard/service"
 	"github.com/arkadiuss/science-dashboard/repository"
 	"github.com/arkadiuss/science-dashboard/controller"
 	"net/http"
+	"log"
 )
 
 func main() {
-	restClient := &http.Client {}
+	httpClient := &http.Client {}
+
 	var sr repository.ISunRepository
-	sr = repository.GetSunrestClient(restClient)
+	sr = repository.GetSunrestClient(httpClient)
 	var sl repository.ILocationRepository
-	sl = repository.GetLocationRestClient(restClient)
+	sl = repository.GetLocationRestClient(httpClient)
 
 	var ds service.IDashboardService
 	ds = &service.DashboardService{ sr, sl }
-	d,err := ds.GetDashboard("83.30.81.55")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Printf("Location: (%v, %v) \n", d.Location.Lat, d.Location.Lon)
-	fmt.Printf("Sunrise: %v, Sunset: %v \n", d.Sunrise, d.Sunset)
 
 	controller.SetupDashboardController(ds)
-	http.ListenAndServe(":8080", nil)
+
+	log.Println("Starting server on 8080...")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

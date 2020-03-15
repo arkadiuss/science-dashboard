@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"encoding/json"
 	"strconv"
-	"fmt"
 )
 
 type LocationRestClient struct {
@@ -42,9 +41,7 @@ func (ls *LocationRestClient) GetCoordinates(ip string) (models.Location, error)
 
 	var locationResponse LocationResponse
 	err = json.NewDecoder(res.Body).Decode(&locationResponse)
-	fmt.Println("tes")
 	lat, _ := strconv.ParseFloat(locationResponse.Latitude, 8)
 	lon, _ := strconv.ParseFloat(locationResponse.Longitude, 8)
-	fmt.Println(locationResponse)
 	return models.Location { lat, lon }, err
 }
