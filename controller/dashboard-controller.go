@@ -56,6 +56,17 @@ func dashboardHandler(writer http.ResponseWriter, req *http.Request) {
 						<td>%v min</td>
 					</tr>
 				</table>
+				<h2>Coronavirus</h2>
+				<table>
+					<tr>
+						<td>Active cases</td>
+						<td>%v</td>
+					</tr>
+					<tr>
+						<td>Deaths to recovered ratio</td>
+						<td>%v</td>
+					</tr>
+				</table>
 			</body>
 		<html>
 	`
@@ -72,7 +83,9 @@ func dashboardHandler(writer http.ResponseWriter, req *http.Request) {
 		dashboard.Sunset,
 		dashboard.ISSLocation.Lat,
 		dashboard.ISSLocation.Lon,
-		dashboard.ISSNextPass)
+		dashboard.ISSNextPass,
+		dashboard.CoronavirusActiveCases,
+		dashboard.CoronavirusDeathRecoveredRatio)
 }
 
 func SetupDashboardController(ds service.IDashboardService) {

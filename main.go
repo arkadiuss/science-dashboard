@@ -17,9 +17,11 @@ func main() {
 	sl = repository.GetLocationRestClient(httpClient)
 	var il repository.IISSRepository
 	il = repository.GetISSRestClient(httpClient)
-
+	var cr repository.ICoronavirusRepository
+	cr = repository.GetCoronavirusRestClient(httpClient)
+	
 	var ds service.IDashboardService
-	ds = service.GetDashboardService(sr, sl, il)
+	ds = service.GetDashboardService(sr, sl, il, cr)
 
 	controller.SetupDashboardController(ds)
 

@@ -14,10 +14,11 @@ type DashboardService struct {
 	sunRepository repository.ISunRepository
 	locationRepository repository.ILocationRepository 
 	iissRepository repository.IISSRepository
+	coronavirusRepository repository.ICoronavirusRepository
 }
 
-func GetDashboardService(sr repository.ISunRepository, lr repository.ILocationRepository, ir repository.IISSRepository) *DashboardService {
-	return &DashboardService { sr, lr, ir }
+func GetDashboardService(sr repository.ISunRepository, lr repository.ILocationRepository, ir repository.IISSRepository, cr repository.ICoronavirusRepository) *DashboardService {
+	return &DashboardService { sr, lr, ir, cr }
 }
 
 func (ds *DashboardService) GetDashboard(location string) (models.Dashboard, error) {
@@ -41,6 +42,10 @@ func (ds *DashboardService) GetDashboard(location string) (models.Dashboard, err
 		return models.Dashboard{}, err
 	}
 	d.ISSNextPass = int(passes[0].Sub(time.Now())/1e9/60)
+	
+	cCases, cDeaths, cRecovered, err := ds.coronavirusRepository.GetGlobalStats()
+	d.CoronavirusActiveCases = cCases - (cDeaths + cRecovered)
+	d.CoronavirusDeathRecoveredRatio = float64(cDeaths)/float64(cRecovered)
 	return d, nil
 }
 
