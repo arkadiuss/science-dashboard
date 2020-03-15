@@ -45,7 +45,17 @@ func dashboardHandler(writer http.ResponseWriter, req *http.Request) {
 						<td>%v</td>
 					</tr>
 				</table>
-				<h2>Rocket launches</h2>
+				<h2>International Space Station</h2>
+				<table>
+					<tr>
+						<td>Current location</td>
+						<td>(%v, %v)</td>
+					</tr>
+					<tr>
+						<td>Next pass over you head in</td>
+						<td>%v min</td>
+					</tr>
+				</table>
 			</body>
 		<html>
 	`
@@ -59,7 +69,10 @@ func dashboardHandler(writer http.ResponseWriter, req *http.Request) {
 		dashboard.Location.Lat,
 		dashboard.Location.Lon,
 		dashboard.Sunrise,
-		dashboard.Sunset)
+		dashboard.Sunset,
+		dashboard.ISSLocation.Lat,
+		dashboard.ISSLocation.Lon,
+		dashboard.ISSNextPass)
 }
 
 func SetupDashboardController(ds service.IDashboardService) {

@@ -15,9 +15,11 @@ func main() {
 	sr = repository.GetSunrestClient(httpClient)
 	var sl repository.ILocationRepository
 	sl = repository.GetLocationRestClient(httpClient)
+	var il repository.IISSRepository
+	il = repository.GetISSRestClient(httpClient)
 
 	var ds service.IDashboardService
-	ds = &service.DashboardService{ sr, sl }
+	ds = service.GetDashboardService(sr, sl, il)
 
 	controller.SetupDashboardController(ds)
 
