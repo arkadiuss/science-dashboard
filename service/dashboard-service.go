@@ -6,17 +6,22 @@ import (
 )
 
 type IDashboardService interface {
-	GetDashboard() (models.Dashboard, error)
+	GetDashboard(string) (models.Dashboard, error)
 }
 
 type DashboardService struct {
 	SunRepository repository.ISunRepository
+	LocationRepository repository.ILocationRepository 
 }
 
-func (ds DashboardService) GetDashboard() (models.Dashboard, error) {
+func (ds *DashboardService) GetDashboard(location string) (models.Dashboard, error) {
 	d := models.Dashboard{}
 	var err error
-	d.Sunrise, d.Sunset, err = ds.SunRepository.GetSunriseSunset(models.Location {})
+	d.Location, err = ds.LocationRepository.GetCoordinates(location)
+	if err != nil {
+		return models.Dashboard{}, err
+	}
+	d.Sunrise, d.Sunset, err = ds.SunRepository.GetSunriseSunset(d.Location)
 	if err != nil {
 		return models.Dashboard{}, err
 	}
